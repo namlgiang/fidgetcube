@@ -1,8 +1,13 @@
-var express = require('express')
-var app = express()
+require('letsencrypt-express').create({
 
-app.use(express.static('public'));
+  server: 'staging'
 
-app.listen(80, function () {
-  console.log('Example app listening on port 80!')
-})
+, email: 'john.doe@example.com'
+
+, agreeTos: true
+
+, approveDomains: [ 'example.com' ]
+
+, app: require('express')().use(express.static('public'))
+
+}).listen(80, 443);
