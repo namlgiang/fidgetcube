@@ -14,4 +14,13 @@ $(document).ready(function() {
       scrollTop: $(".product").offset().top - 200
     }, 1000);
   });
+
+  $(".tab>div").click(function() {
+    $(".tab>div").removeClass("active");
+
+    $(".tab-content>div").removeClass("active");
+    $(".tab-content ." + $(this).attr("class")).addClass("active");
+
+    $(this).addClass("active");
+  });
 });
