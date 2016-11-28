@@ -5,7 +5,7 @@ var app = express()
 
 require('letsencrypt-express').create({
 
-  server: 'staging'
+  server: 'https://acme-v01.api.letsencrypt.org/directory'
 
 , email: 'namlgiangbiz@gmail.com'
 
