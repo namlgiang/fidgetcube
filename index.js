@@ -1,3 +1,6 @@
+var express = require('express')
+var app = express()
+
 require('letsencrypt-express').create({
 
   server: 'staging'
@@ -8,6 +11,6 @@ require('letsencrypt-express').create({
 
 , approveDomains: [ 'example.com' ]
 
-, app: require('express')().use(express.static('public'))
+, app: app.use(express.static('public'))
 
 }).listen(80, 443);
