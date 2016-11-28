@@ -7,11 +7,11 @@ require('letsencrypt-express').create({
 
   server: 'staging'
 
-, email: 'john.doe@example.com'
+, email: 'namlgiang@gmail.com'
 
 , agreeTos: true
 
-, approveDomains: [ 'example.com' ]
+, approveDomains: [ 'getmyfidgetcube.com' ]
 
 , app: app.use(express.static('public'))
 
