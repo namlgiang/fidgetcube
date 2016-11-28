@@ -7,7 +7,7 @@ require('letsencrypt-express').create({
 
   server: 'staging'
 
-, email: 'namlgiang@gmail.com'
+, email: 'namlgiangbiz@gmail.com'
 
 , agreeTos: true
 
