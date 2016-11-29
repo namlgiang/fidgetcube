@@ -112,6 +112,7 @@ a {
 .purchase {
   float: left;
   width: 300px;
+  max-width: 100%;
   text-align: left;
   box-sizing: content-box;
   padding-left: 30px;
@@ -273,6 +274,6 @@ a {
 
 .social-sharing>* {
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: bottom !important;
     margin-top: 15px;
 }
