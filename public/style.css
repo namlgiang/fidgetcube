@@ -62,6 +62,7 @@ img {
   width: 100%;
   top:0;
   padding: 30px 0;
+  z-index: 1000;
 }
 
 .top-left {
