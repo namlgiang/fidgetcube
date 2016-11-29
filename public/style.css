@@ -112,7 +112,7 @@ a {
 .purchase {
   float: left;
   width: 300px;
-  max-width: 100%;
+  max-width: 80%;
   text-align: left;
   box-sizing: content-box;
   padding-left: 30px;
