@@ -34,6 +34,7 @@ $(document).ready(function() {
 
   $("form").submit(function() {
     fbq('track', 'InitiateCheckout');
+    ga('send', 'pageview', 'InitiateCheckout');
     console.log("Track Init Check Out");
   });
 });
