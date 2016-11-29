@@ -270,3 +270,9 @@ a {
 .saleend {
   font-size: 14px;
 }
+
+.social-sharing>* {
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 15px;
+}
