@@ -1,18 +1,76 @@
 var express = require('express')
 var app = express()
 
-'use strict';
+// 'use strict';
+//
+// require('letsencrypt-express').create({
+//
+//   server: 'https://acme-v01.api.letsencrypt.org/directory'
+//
+// , email: 'namlgiangbiz@gmail.com'
+//
+// , agreeTos: true
+//
+// , approveDomains: [ 'getmyfidgetcube.com' ]
+//
+// , app: app.use(express.static('public'))
+//
+// }).listen(80, 443);
 
-require('letsencrypt-express').create({
 
-  server: 'https://acme-v01.api.letsencrypt.org/directory'
+var leStore = require('le-store-certbot').create({
+  configDir: '~/letsencrypt/etc',          // or /etc/letsencrypt or wherever
+  privkeyPath: ':configDir/live/getmyfidgetcube.com/privkey.pem',          //
+  fullchainPath: ':configDir/live/getmyfidgetcube.com/fullchain.pem',      // Note: both that :configDir and :hostname
+  certPath: ':configDir/live/getmyfidgetcube.com/cert.pem',                //       will be templated as expected by
+  chainPath: ':configDir/live/getmyfidgetcube.com/chain.pem',              //       node-letsencrypt
+  workDir: '~/letsencrypt/var/lib',
+  logsDir: '~/letsencrypt/var/log',
+  webrootPath: '~/letsencrypt/srv/www/getmyfidgetcube.com/.well-known/acme-challenge',
+  debug: false
+});
 
-, email: 'namlgiangbiz@gmail.com'
 
-, agreeTos: true
+// returns an instance of node-letsencrypt with additional helper methods
+var lex = require('letsencrypt-express').create({
+  // set to https://acme-v01.api.letsencrypt.org/directory in production
+  //server: 'staging',
+  server: 'https://acme-v01.api.letsencrypt.org/directory',
 
-, approveDomains: [ 'getmyfidgetcube.com' ]
+  // If you wish to replace the default plugins, you may do so here
+  //
+  challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '~/letsencrypt/var/acme-challenges' }) },
+  store: leStore,
 
-, app: app.use(express.static('public'))
 
-}).listen(80, 443);
+  // You probably wouldn't need to replace the default sni handler
+  // See https://github.com/Daplie/le-sni-auto if you think you do
+  //, sni: require('le-sni-auto').create({})
+
+  approveDomains: approveDomains
+});
+
+function approveDomains(opts, certs, cb) {
+  // TODO - verify domain
+
+  if (certs) {
+     opts.domains = certs.altnames;
+   }
+  else {
+     opts.email = 'namlgiang@gmail.com';
+     opts.agreeTos = true;
+  }
+
+  cb(null, { options: opts, certs: certs });
+}
+
+app.use(express.static('public'));
+
+// handles acme-challenge and redirects to https
+require('http').createServer(lex.middleware(require('redirect-https')())).listen(80, function () {
+  console.log("Listening for ACME http-01 challenges on", this.address());
+});
+
+server = require('https').createServer(lex.httpsOptions, lex.middleware(app)).listen(443, function () {
+  console.log("Listening for ACME tls-sni-01 challenges and serve app on", this.address());
+});
