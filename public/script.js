@@ -31,4 +31,9 @@ $(document).ready(function() {
 
     $(this).addClass("active");
   });
+
+  $("form").submit(function() {
+    fbq('track', 'InitiateCheckout');
+    console.log("Track Init Check Out");
+  });
 });
