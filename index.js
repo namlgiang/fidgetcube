@@ -19,14 +19,14 @@ var app = express()
 
 
 var leStore = require('le-store-certbot').create({
-  configDir: '~/letsencrypt/etc',          // or /etc/letsencrypt or wherever
+  configDir: '/etc/letsencrypt',          // or /etc/letsencrypt or wherever
   privkeyPath: ':configDir/live/getmyfidgetcube.com/privkey.pem',          //
   fullchainPath: ':configDir/live/getmyfidgetcube.com/fullchain.pem',      // Note: both that :configDir and :hostname
   certPath: ':configDir/live/getmyfidgetcube.com/cert.pem',                //       will be templated as expected by
   chainPath: ':configDir/live/getmyfidgetcube.com/chain.pem',              //       node-letsencrypt
-  workDir: '~/letsencrypt/var/lib',
-  logsDir: '~/letsencrypt/var/log',
-  webrootPath: '~/letsencrypt/srv/www/getmyfidgetcube.com/.well-known/acme-challenge',
+  workDir: '/etc/letsencrypt/var/lib',
+  logsDir: '/etc/letsencrypt/var/log',
+  webrootPath: '/etc/letsencrypt/srv/www/getmyfidgetcube.com/.well-known/acme-challenge',
   debug: false
 });
 
@@ -39,7 +39,7 @@ var lex = require('letsencrypt-express').create({
 
   // If you wish to replace the default plugins, you may do so here
   //
-  challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '~/letsencrypt/var/acme-challenges' }) },
+  challenges: { 'http-01': require('le-challenge-fs').create({ webrootPath: '/etc/letsencrypt/var/acme-challenges' }) },
   store: leStore,
 
 
@@ -64,9 +64,9 @@ function approveDomains(opts, certs, cb) {
   cb(null, { options: opts, certs: certs });
 }
 
-app.use(express.static('public'));
 
-// handles acme-challenge and redirects to https
+
+// handles acme-challenge and redirects to http
 require('http').createServer(lex.middleware(require('redirect-https')())).listen(80, function () {
   console.log("Listening for ACME http-01 challenges on", this.address());
 });
